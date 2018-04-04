@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="theme-color" content="#97E0BB" />
+	<link rel="manifest" href="manifest.json">
+	<link rel="icon" href="favicon.png" type="image/png">
+	<link href="https://fonts.googleapis.com/css?family=Damion|Lobster" rel="stylesheet">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/styles.css">
+	<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+	<title>Book-N-Bike</title>
+</head>
+
+<body>
+
+	<div class="container-fluid">
+		<section id="home" class="row">
+			<div class="col-xs-1">
+				<button id="back-button" class="green-arrow inactive">
+					<i class="fa fa-angle-left"></i>
+				</button>
+			</div>
+			<div class="col-xs-10">
+				<div class="row" id="slideshow">
+					<h2 id="slide-title" class="col-xs-12"></h2>
+					<figure id="slide-content" class="col-xs-12">
+					</figure>
+					<figcaption id="slide-description" class="col-xs-12"></figcaption>
+				</div>
+			</div>
+			<div class="col-xs-1">
+				<button id="forth-button" class="green-arrow">
+					<i class="fa fa-angle-right"></i>
+				</button>
+				<button id="scrolldown-to-map" class="green-arrow scroll-to-map inactive">
+					<i class="fa fa-angle-double-down"></i>
+				</button>
+			</div>
+		</section>
+
+		<section id="booking" class="row">
+
+			<button id="scrollup-to-home" class="green-arrow">
+					<i class="fa fa-angle-double-up"></i>
+			</button>
+
+			<div id="map" class="col-xs-12 col-sm-6 col-md-8">
+			</div>
+
+			<button id="scrolldown-to-form" class="green-arrow">
+					<i class="fa fa-angle-double-down"></i>
+			</button>
+
+			<div id="form" class="col-xs-12 col-sm-6 col-md-4">
+
+				<div id="infos-station">
+					<button id="scrollup-to-map" class="green-arrow scroll-to-map">
+						<i class="fa fa-angle-double-up"></i>
+					</button>
+					<p>Station: <span class="station-id blue-themed"></span></p>
+					<p>Adresse: <span class="station-name blue-themed"></span></p>
+					<p>Vélos dispos: <span class="available-bikes blue-themed data-color"></span></p>
+					<p>Places libres: <span class="available-stands blue-themed data-color"></span></p>
+					<p>Terminal de paiement: <span class="banking blue-themed data-color"></span></p>
+					<p>Station Bonus: <span class="bonus blue-themed data-color"></span></p>
+				</div>
+				<form>
+					<a>Reserver</a>
+				</form>
+			</div>
+		</section>
+
+	</div>
+
+	<div id="info-windows-wrapper">
+		<div class="template">
+			<p>Station:<br><span class="station-name blue"></span></p>
+			<p>Vélos dispos: <span class="available-bikes blue"></span></p>
+			<p>Places libres:<span class="available-stands blue"></span></p>
+		</div>
+	</div>
+	<script src="js/jquery-3.2.1.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/ajax.js"></script>
+	<script src="js/script.js"></script>
+</body>
+
+
+</html>
