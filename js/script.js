@@ -1,7 +1,7 @@
 /*******************************/
 /****** GOOGLE MAPS'S API ******/
 /*******************************/
-/*
+
 
 $('#map').html('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAo-wOejIa5KeD-XsqSQA9LN79efwmxOkY&callback=initMap" async defer></script>');
 
@@ -107,7 +107,7 @@ function attachInfoWindow(marker, $templateCloned, infos) {
 	});
 }
 
-*/
+
 
 //---------------------------------------------------------------------------
 //
@@ -256,7 +256,9 @@ var $DOM = {
 	bookingSection: $('#booking'),
 	formSection: $('#form'),
 	dataColored: $('.data-color'),
-	timerZone: $('#timer-zone')
+	timerZone: $('#timer-zone'),
+	formSubmit: $('#book-up'),
+	formControls: $('.mb-3')
 };
 
 
@@ -355,13 +357,21 @@ $DOM.scrollToForm.click(function () {
 	}, 1000);
 });
 
-
 $DOM.scrollToHome.click(function () {
 	$('html, body').animate({
 		scrollTop: $DOM.homeSection.offset().top
 	}, 1000);
 });
 
+$DOM.formSubmit.click(function () {
+	$DOM.formControls.each(function () {
+		if ($(this).children('input').val() === '') {
+			$(this).addClass('has-error').children('span').removeAttr('hidden');
+			$('html, body').scrollTop($DOM.formSection.offset().top);
+		} else
+			$(this).removeClass('has-error').addClass('has-success');
+	});
+});
 
 
 //--------------------------------------------------------------------
