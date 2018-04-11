@@ -204,17 +204,25 @@ figcaption {
 	color: black;
 }
 
-#biker{	
+canvas {
+	border: 1px solid #ccc;
+	border-radius: 4px;
+
+}
+
+#biker {
 	height: 60%;
 	background-image: url(../img/biker-nobg.png);
-	background-size:contain;
+	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 	position: relative;
-	bottom: 0;
+	bottom: 25px;
+	pointer-events: none;
 }
 
 #registered {
+	display: none;
 	overflow: hidden;
 	position: fixed;
 	bottom: 0;
@@ -222,7 +230,7 @@ figcaption {
 	width: 33.33%;
 	color: crimson;
 	z-index: 99;
-	background-color: rgba(255,255,255,0.5);
+	background-color: rgba(255, 255, 255, 0.5);
 	-webkit-transition-property: background-color;
 	transition-property: background-color;
 	-webkit-transition-duration: 1s;
@@ -232,21 +240,23 @@ figcaption {
 #registered .panel-body {
 	font-weight: 700;
 	text-align: center;
-	
+
 }
 
 #registered:hover {
-	background-color: rgba(255,255,255,1);
+	background-color: rgba(255, 255, 255, 1);
 	-webkit-transition-property: background-color;
 	transition-property: background-color;
 	-webkit-transition-duration: 1s;
 	transition-duration: 1s
 }
+
 /****************************************/
 
 /********* Screen Width < 992px *********/
 
 /****************************************/
+
 @media screen and (max-width: 991px) {
 	#registered {
 		width: 50%;
@@ -274,7 +284,7 @@ figcaption {
 	#slide-content {
 		height: 55%;
 	}
-	
+
 }
 
 

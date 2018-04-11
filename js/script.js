@@ -256,9 +256,11 @@ var $DOM = {
 	bookingSection: $('#booking'),
 	formSection: $('#form'),
 	dataColored: $('.data-color'),
-	timerZone: $('#timer-zone'),
+	timerZone: $('.timer'),
 	formSubmit: $('#book-up'),
-	formControls: $('.mb-3')
+	formControls: $('.mb-3'),
+	canvas: $('#myCanvas'),
+	canvasWrapper: $('#canvas-wrapper')
 };
 
 
@@ -288,10 +290,74 @@ for (var slideNum = 0; slideNum < 5; slideNum++) {
 var slidesCounter = 0;
 
 //--------------------------------------------------------------------
-//
-//
-//
-//
+
+/***************************/
+/****** CANVAS OBJECT ******/
+/***************************/
+
+var signature = {
+	mousePressed: false,
+	lastX: 0,
+	lastY: 0,
+	ctx: document.getElementById('myCanvas').getContext("2d"),
+	done: false,
+
+	draw: function (x, y, isDown) {
+		if (isDown) {
+			this.ctx.beginPath();
+			this.ctx.strokeStyle = 'black';
+			this.ctx.lineWidth = 3;
+			this.ctx.lineJoin = "round";
+			this.ctx.moveTo(this.lastX, this.lastY);
+			this.ctx.lineTo(x, y);
+			this.ctx.closePath();
+			this.ctx.stroke();
+		}
+		this.lastX = x;
+		this.lastY = y;
+	},
+
+	clearArea: function () {
+		// Use the identity matrix while clearing the canvas
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+		this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+	}
+};
+
+
+$DOM.canvas.attr('width', $DOM.canvasWrapper.width());
+
+
+$DOM.canvas.mousedown(function (e) {
+	signature.mousePressed = true;
+	signature.draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
+});
+
+$DOM.canvas.mousemove(function (e) {
+	if (signature.mousePressed) {
+		signature.draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
+		signature.done = true;
+	}
+});
+
+$DOM.canvas.mouseup(function (e) {
+	signature.mousePressed = false;
+});
+$DOM.canvas.mouseleave(function (e) {
+	signature.mousePressed = false;
+});
+
+$(window).resize(function () {
+	$DOM.canvas.attr('width', $DOM.canvasWrapper.width());
+});
+
+
+
+
+
+
+
+
 
 /***********************/
 /****** FUNCTIONS ******/
@@ -365,11 +431,13 @@ $DOM.scrollToHome.click(function () {
 
 $DOM.formSubmit.click(function () {
 	$DOM.formControls.each(function () {
-		if ($(this).children('input').val() === '') {
-			$(this).addClass('has-error').children('span').removeAttr('hidden');
-			$('html, body').scrollTop($DOM.formSection.offset().top);
-		} else
-			$(this).removeClass('has-error').addClass('has-success');
+		if ($(this).has('input')) {
+			if (($(this).children('input').val() === '') || (!signature.done)) {
+				$(this).addClass('has-error').children('span').removeAttr('hidden');
+
+			} else
+				$(this).removeClass('has-error').addClass('has-success');
+		}
 	});
 });
 
