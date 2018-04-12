@@ -87,17 +87,19 @@
 					<div class="panel-body">
 						<div class="mb-3 form-group">
 							<label for="name" class="control-label">Nom :</label><input type="text" name="name" id="name" class="form-control" required>
-							<span class="control-label" hidden>Veuillez entrer votre nom.
+							<span class="control-label">Veuillez entrer votre nom.
 						</span>
 						</div>
 						<div class="mb-3 form-group">
 							<label for="surname" class="control-label">Prénom :</label><input type="text" name="surname" id="surname" class="form-control" required>
-							<span class="control-label" hidden="true">Veuillez entrer votre prénom.
+							<span class="control-label">Veuillez entrer votre prénom.
 						</span>
 						</div><br>
 						<div class="mb-3 form-group" id="canvas-wrapper">
 							<label class="control-label">Signature :</label>
 							<canvas id="myCanvas"></canvas>
+							<span class="control-label">Une signature est obligatoire
+							</span>
 						</div><br>
 						<button id="book-up" class="btn btn-primary" onclick="return false;">Réserver</button>
 					</div>

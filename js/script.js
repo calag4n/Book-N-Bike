@@ -139,7 +139,6 @@ request.onsuccess = function (event) {
 	resultedDatas = request.result;
 	console.log("success: " + resultedDatas);
 	dataBase.read();
-
 };
 
 request.onupgradeneeded = function (event) {
@@ -168,7 +167,8 @@ var dataBase = {
 		request.onsuccess = function (event) {
 			// Do something with the request.result!
 			if (request.result) {
-				console.log("Name: " + request.result.name + ", addresse: " + request.result.address + ", date: " + request.result.date);
+				console.log("Nom: " + request.result.name + ", prénom: " + request.result.surname + ", signé: " + request.result.signed + ", date: " + request.result.date);
+				console.log('Station: ' + request.result.stationName + ', adresse: ' + request.result.address + ', vélos dispo: ' + request.result.bikes);
 				dataBase.registeredTime = request.result.date;
 			} else {
 				console.log("This store is empty");
@@ -177,13 +177,16 @@ var dataBase = {
 		};
 	},
 
-	add: function (name, address, bikes) {
+	add: function (name, surname, signed, stationName, address, bikes) {
 		dataBase.remove();
 		var request = resultedDatas.transaction(["station"], "readwrite")
 			.objectStore("station")
 			.add({
 				id: 1,
 				name: name,
+				surname: surname,
+				signed: signed,
+				stationName: stationName,
 				address: address,
 				bikes: bikes,
 				date: Date.now()
@@ -197,7 +200,7 @@ var dataBase = {
 		request.onerror = function () {
 			console.log("Unable to add data\r\nid is aready exist in your database! ");
 		}
-		timer = setInterval(bookingTimer, 1000);
+		//timer = setInterval(bookingTimer, 1000);
 	},
 
 	remove: function () {
@@ -256,11 +259,21 @@ var $DOM = {
 	bookingSection: $('#booking'),
 	formSection: $('#form'),
 	dataColored: $('.data-color'),
+	registeredBlock: $('#registered'),
 	timerZone: $('.timer'),
 	formSubmit: $('#book-up'),
 	formControls: $('.mb-3'),
 	canvas: $('#myCanvas'),
-	canvasWrapper: $('#canvas-wrapper')
+	canvasWrapper: $('#canvas-wrapper'),
+	formValues: {
+		name: $('#name'),
+		surname: $('#surname')
+	},
+	stationDatas: {
+		id: $('#infos-station .station-id'),
+		address: $('#infos-station .station-name'),
+		bikes: $('#infos-station .available-bikes')
+	}
 };
 
 
@@ -289,6 +302,9 @@ for (var slideNum = 0; slideNum < 5; slideNum++) {
 
 var slidesCounter = 0;
 
+
+
+
 //--------------------------------------------------------------------
 
 /***************************/
@@ -316,17 +332,7 @@ var signature = {
 		this.lastX = x;
 		this.lastY = y;
 	},
-
-	clearArea: function () {
-		// Use the identity matrix while clearing the canvas
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-		this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-	}
 };
-
-
-$DOM.canvas.attr('width', $DOM.canvasWrapper.width());
-
 
 $DOM.canvas.mousedown(function (e) {
 	signature.mousePressed = true;
@@ -349,6 +355,7 @@ $DOM.canvas.mouseleave(function (e) {
 
 $(window).resize(function () {
 	$DOM.canvas.attr('width', $DOM.canvasWrapper.width());
+	signature.done = false;
 });
 
 
@@ -379,7 +386,11 @@ function bookingTimer() {
 		seconds = totalSeconds % 60;
 	totalSeconds = (totalSeconds - seconds) / 60;
 	var minutes = totalSeconds % 60;
-	$DOM.timerZone.text('Il reste : ' + minutes + ' minutes et ' + seconds + 'secondes.');
+	if (seconds > -1 && minutes > -1)
+		$DOM.registeredBlock.css('display', 'block');
+	else
+		$DOM.registeredBlock.css('display', 'none');
+	$DOM.timerZone.text(minutes + ' minutes et ' + seconds + ' secondes.');
 };
 
 
@@ -430,16 +441,30 @@ $DOM.scrollToHome.click(function () {
 });
 
 $DOM.formSubmit.click(function () {
+	//Take care of all controls are filling including signature
+	var formIsFullfill = 0;
 	$DOM.formControls.each(function () {
-		if ($(this).has('input')) {
-			if (($(this).children('input').val() === '') || (!signature.done)) {
-				$(this).addClass('has-error').children('span').removeAttr('hidden');
-
-			} else
-				$(this).removeClass('has-error').addClass('has-success');
+		if ($(this).children('input').val() !== undefined) {
+			if ($(this).children('input').val() === '') {
+				$(this).addClass('has-error').children('span').css('opacity', 1);
+			} else {
+				$(this).removeClass('has-error').addClass('has-success').children('span').css('opacity', 0);
+				formIsFullfill++;
+			}
+		} else if (!signature.done) {
+			$(this).addClass('has-error').children('span').css('opacity', 1);
+		} else {
+			$(this).removeClass('has-error').addClass('has-success').children('span').css('opacity', 0);
+			formIsFullfill++;
 		}
 	});
+	if (formIsFullfill === 3) {
+		dataBase.add($DOM.formValues.name.val(), $DOM.formValues.surname.val(), signature.done, $DOM.stationDatas.id.text(), $DOM.stationDatas.address.text(), $DOM.stationDatas.bikes.text());
+		$DOM.registeredBlock.css('display', 'block');
+	}
 });
+
+
 
 
 //--------------------------------------------------------------------
@@ -448,6 +473,7 @@ $DOM.formSubmit.click(function () {
 /****** Page loaded, script begin ******/
 $(function () {
 	loadSlide();
+	$DOM.canvas.attr('width', $DOM.canvasWrapper.width());
 
 });
 //-----------------------------------------------------------------END
