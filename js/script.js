@@ -154,6 +154,19 @@ request.onupgradeneeded = function (event) {
 
 var dataBase = {
 	registeredTime: {},
+	station: {
+		name: '',
+		address: '',
+		bikes: '',
+		stands: '',
+		banking: '',
+		bonus: ''
+	},
+	user: {
+		name: '',
+		surname: ''
+	},
+
 
 	read: function () {
 		var transaction = resultedDatas.transaction(["station"]);
@@ -167,13 +180,19 @@ var dataBase = {
 		request.onsuccess = function (event) {
 			// Do something with the request.result!
 			if (request.result) {
+
 				console.log("Nom: " + request.result.name + ", prénom: " + request.result.surname + ", signé: " + request.result.signed + ", date: " + request.result.date);
 				console.log('Station: ' + request.result.stationName + ', adresse: ' + request.result.address + ', vélos dispo: ' + request.result.bikes);
 				dataBase.registeredTime = request.result.date;
+				dataBase.station.name = request.result.stationName;
+				dataBase.station.address = request.result.address;
+				$DOM.registeredBlock.find('.station-id').text(dataBase.station.name);
+				$DOM.registeredBlock.find('.station-name').text(dataBase.station.address);
 			} else {
 				console.log("This store is empty");
 			}
 			timer = setInterval(bookingTimer, 1000);
+
 		};
 	},
 
@@ -246,6 +265,9 @@ if ('serviceWorker' in navigator) {
 
 /****** Get DOM elements as properties of $DOM object ******/
 var $DOM = {
+	panel: $('.panel'),
+	panelBody: $('.panel-body'),
+	panelHeading: $('.panel-heading'),
 	forthButton: $('#forth-button'),
 	backButton: $('#back-button'),
 	greenButtons: $('.green-arrow'),
@@ -263,7 +285,6 @@ var $DOM = {
 	timerZone: $('.timer'),
 	formSubmit: $('#book-up'),
 	formControls: $('.mb-3'),
-	canvas: $('#myCanvas'),
 	canvasWrapper: $('#canvas-wrapper'),
 	formValues: {
 		name: $('#name'),
@@ -302,9 +323,29 @@ for (var slideNum = 0; slideNum < 5; slideNum++) {
 
 var slidesCounter = 0;
 
+var isTouchDevice = 'ontouchstart' in document.documentElement;
 
 
+var pressDownType = function () {
+	if ('ontouchstart' in document.documentElement)
+		return 'touchstart';
+	else
+		return 'mousedown';
+};
 
+var moveType = function () {
+	if ('ontouchstart' in document.documentElement)
+		return 'touchmove';
+	else
+		return 'mousemove';
+};
+
+var endType = function () {
+	if ('ontouchstart' in document.documentElement)
+		return 'touchend';
+	else
+		return 'mouseup';
+};
 //--------------------------------------------------------------------
 
 /***************************/
@@ -312,51 +353,112 @@ var slidesCounter = 0;
 /***************************/
 
 var signature = {
-	mousePressed: false,
-	lastX: 0,
-	lastY: 0,
-	ctx: document.getElementById('myCanvas').getContext("2d"),
+	painting: false,
+	started: false,
+	canvas: $("#canvas"),
 	done: false,
 
-	draw: function (x, y, isDown) {
-		if (isDown) {
-			this.ctx.beginPath();
-			this.ctx.strokeStyle = 'black';
-			this.ctx.lineWidth = 3;
-			this.ctx.lineJoin = "round";
-			this.ctx.moveTo(this.lastX, this.lastY);
-			this.ctx.lineTo(x, y);
-			this.ctx.closePath();
-			this.ctx.stroke();
+	drawLine: function () {
+
+		if (!signature.started) {
+			signature.context.beginPath();
+			signature.context.moveTo(signature.cursorX, signature.cursorY);
+			signature.started = true;
+			signature.done = true;
+		} else {
+			signature.context.lineTo(signature.cursorX, signature.cursorY);
+			signature.context.strokeStyle = '#000';
+			signature.context.lineWidth = 4;
+			signature.context.stroke();
 		}
-		this.lastX = x;
-		this.lastY = y;
+
 	},
-};
+	move: function (e, mobile, obj) {
+		if (signature.painting) {
+			if (mobile) {
+				// Event mobile :
+				var ev = e.originalEvent;
+				e.preventDefault();
 
-$DOM.canvas.mousedown(function (e) {
-	signature.mousePressed = true;
-	signature.draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, false);
-});
+				// Set finger coordinates
+				signature.cursorX = (ev.targetTouches[0].pageX - obj.offsetLeft); // 10 = décalage du curseur
+				signature.cursorY = (ev.targetTouches[0].pageY - obj.offsetTop);
+			} else {
+				// Set mouse coordinates
+				signature.cursorX = (e.pageX - obj.offsetLeft); // 10 = cursor's shift
+				signature.cursorY = (e.pageY - obj.offsetTop);
+			}
+			signature.drawLine();
+		}
+	},
+	moveEnd: function () {
+		signature.painting = false;
+		signature.started = false;
+	},
+	moveStart: function (e, mobile, obj) {
+		signature.painting = true;
 
-$DOM.canvas.mousemove(function (e) {
-	if (signature.mousePressed) {
-		signature.draw(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
-		signature.done = true;
+		if (mobile) {
+			// Event mobile :
+			var ev = e.originalEvent;
+			e.preventDefault();
+
+			// Set finger coordinates
+			signature.cursorX = (ev.pageX - obj.offsetLeft); // 10 = cursor's shift
+			signature.cursorY = (ev.pageY - obj.offsetTop);
+		} else {
+			// Set mouse coordinates
+			signature.cursorX = (e.pageX - this.offsetLeft);
+			signature.cursorY = (e.pageY - this.offsetTop);
+		}
 	}
+}
+// Set canvas context
+signature.context = signature.canvas[0].getContext('2d');
+signature.context.globalCompositeOperation = 'destination-over';
+signature.context.lineJoin = 'round';
+signature.context.lineCap = 'round';
+
+// -----------------------
+// Finger events
+// -----------------------
+
+signature.canvas.bind('touchstart', function (e) {
+	signature.moveStart(e, true, this);
 });
 
-$DOM.canvas.mouseup(function (e) {
-	signature.mousePressed = false;
-});
-$DOM.canvas.mouseleave(function (e) {
-	signature.mousePressed = false;
+$(this).bind('touchend', function () {
+	signature.moveEnd();
 });
 
-$(window).resize(function () {
-	$DOM.canvas.attr('width', $DOM.canvasWrapper.width());
-	signature.done = false;
+signature.canvas.bind('touchmove', function (e) {
+	signature.move(e, true, this);
 });
+
+// -----------------------
+// Mouse events
+// -----------------------
+
+signature.canvas.mousedown(function (e) {
+	signature.moveStart(e, false, this);
+});
+
+$(this).mouseup(function () {
+	signature.moveEnd();
+});
+
+signature.canvas.mousemove(function (e) {
+	signature.move(e, false, this);
+});
+
+
+
+
+
+
+
+
+/*----------------------------------------*/
 
 
 
@@ -390,10 +492,15 @@ function bookingTimer() {
 		$DOM.registeredBlock.css('display', 'block');
 	else
 		$DOM.registeredBlock.css('display', 'none');
-	$DOM.timerZone.text(minutes + ' minutes et ' + seconds + ' secondes.');
+	$DOM.timerZone.text(minutes + ' min ' + seconds + ' sec.');
 };
 
-
+function sizing() {
+	signature.canvas.attr('width', $DOM.canvasWrapper.width());
+	$DOM.panel.each(function () {
+		$(this).children('.panel-body').height($(this).height() - $(this).children('.panel-heading').height() - 20); //Need to substract the padding of .panel-heading
+	});
+}
 //--------------------------------------------------------------------
 //
 //
@@ -401,7 +508,7 @@ function bookingTimer() {
 //
 
 /******************************/
-/****** EVENTS LISTENERS ******/
+/****** DOM EVENTS LISTENERS ******/
 /******************************/
 
 $DOM.forthButton.click(function () {
@@ -439,6 +546,9 @@ $DOM.scrollToHome.click(function () {
 		scrollTop: $DOM.homeSection.offset().top
 	}, 1000);
 });
+$DOM.registeredBlock.click(function () {
+	$(this).children('.panel-body').toggle();
+});
 
 $DOM.formSubmit.click(function () {
 	//Take care of all controls are filling including signature
@@ -458,13 +568,18 @@ $DOM.formSubmit.click(function () {
 			formIsFullfill++;
 		}
 	});
-	if (formIsFullfill === 3) {
+	if (formIsFullfill === 3 && $availableBikes.eq(0).text() > 0) {
 		dataBase.add($DOM.formValues.name.val(), $DOM.formValues.surname.val(), signature.done, $DOM.stationDatas.id.text(), $DOM.stationDatas.address.text(), $DOM.stationDatas.bikes.text());
 		$DOM.registeredBlock.css('display', 'block');
+		$DOM.registeredBlock.find('.station-id').text(dataBase.station.name);
+
 	}
 });
 
-
+$(window).resize(function () {
+	signature.done = false;
+	sizing();
+});
 
 
 //--------------------------------------------------------------------
@@ -473,7 +588,17 @@ $DOM.formSubmit.click(function () {
 /****** Page loaded, script begin ******/
 $(function () {
 	loadSlide();
-	$DOM.canvas.attr('width', $DOM.canvasWrapper.width());
+	sizing();
 
 });
 //-----------------------------------------------------------------END
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------TEST ZONE

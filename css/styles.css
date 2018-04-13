@@ -22,12 +22,11 @@ figcaption {
 }
 
 .container-fluid {
-	height: 200vh;
+	/*height: 200vh;*/
 }
 
 .row {
 	background-color: #202020;
-	height: 50%;
 	align-items: center;
 	justify-content: center;
 }
@@ -64,6 +63,7 @@ figcaption {
 
 #home {
 	padding: 4% 1% 2% 1%;
+	height: 100vh;
 
 }
 
@@ -154,14 +154,19 @@ figcaption {
 	height: 100%;
 }
 
+#map-container {
+	height: 100vh;
+}
+
 #map-container .panel-body {
 	padding: 0;
-	height: 96%;
 }
 
 #form {
 	padding: 0;
 	background-color: #202020;
+	position: initial;
+	height: 100vh;
 }
 
 #form > form {
@@ -170,11 +175,11 @@ figcaption {
 }
 
 #infos-station {
-	height: 40%;
+	height: 40vh;
 }
 
 #infos-station .panel-body {
-	height: 90%;
+
 	font-weight: 700;
 	padding-left: 0;
 }
@@ -218,6 +223,8 @@ span.control-label {
 canvas {
 	border: 1px solid #ccc;
 	border-radius: 4px;
+	z-index: 96;
+	color: black;
 }
 
 .mb-3 {
@@ -247,6 +254,8 @@ form .panel-body {
 	bottom: 0;
 	right: 0;
 	width: 33.33%;
+	max-height: 120px;
+
 	color: crimson;
 	z-index: 99;
 	background-color: rgba(255, 255, 255, 0.5);
@@ -259,6 +268,7 @@ form .panel-body {
 #registered .panel-body {
 	font-weight: 700;
 	text-align: center;
+	vertical-align: middle;
 
 }
 
@@ -303,6 +313,10 @@ form .panel-body {
 	#slide-content {
 		height: 55%;
 	}
+	#form,
+		{
+		height: auto;
+	}
 
 }
 
@@ -315,20 +329,7 @@ form .panel-body {
 
 @media screen and (max-width: 768px) {
 	.container-fluid {
-		height: auto;
-	}
-
-	.row#home {
-		height: 100vh;
-	}
-
-
-	.row#booking {
-		height: 200vh;
-	}
-	#map-container,
-	#form {
-		height: 50%;
+		/*height: auto;*/
 	}
 
 	#scrolldown-to-form {
@@ -342,6 +343,20 @@ form .panel-body {
 	#registered {
 		width: 100%;
 		overflow: visible;
+	}
+
+	#form {
+		height: 150vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		overflow: hidden;
+	}
+	#infos-station {
+		height: 50vh;
+	}
+	#form > form {
+		height: 60vh;
 	}
 
 }
@@ -359,4 +374,5 @@ form .panel-body {
 	#datas > p {
 		margin-bottom: 5px;
 	}
+
 }
