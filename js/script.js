@@ -1,114 +1,3 @@
-/*******************************/
-/****** GOOGLE MAPS'S API ******/
-/*******************************/
-
-
-$('#map').html('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAo-wOejIa5KeD-XsqSQA9LN79efwmxOkY&callback=initMap" async defer></script>');
-
-var $template = $('.template'), //Must have a DOM object for maps.InfoWindow
-	$stationName = $('.station-name'),
-	$availableBikes = $('.available-bikes'),
-	$availableStands = $('.available-stands'),
-
-
-	$infoWindowsWrapper = $('#info-windows-wrapper');
-
-
-function initMap() {
-
-	var map = new google.maps.Map(document.getElementById('map'), {
-		center: {
-			lat: 45.74,
-			lng: 4.83
-		},
-		zoom: 15
-	});
-
-	ajaxGet("https://api.jcdecaux.com/vls/v1/stations?contract=lyon&apiKey=51d504f995e48a567cd425dc85f0771829b79a65",
-		function (result) {
-			var stations = JSON.parse(result);
-
-			var markers = stations.map(function (station) {
-
-				var infos = {
-						name: station.name,
-						address: station.address,
-						bikes: station.available_bikes,
-						stands: station.available_bike_stands,
-						banking: (station.banking) ? 'Oui' : 'Non',
-						bonus: (station.bonus) ? 'Oui' : 'Non'
-					},
-					colorNumber = function (int) {
-						if (int < 1)
-							return 'red';
-						return (int < 6) ? 'orange' : 'green';
-					}
-
-				$templateCloned = $template.clone(true);
-
-				$templateCloned.removeClass('template').addClass('clone');
-				$templateCloned.css('color', 'black');
-				$templateCloned.find('.station-name').text(infos.address);
-				$templateCloned.find('.available-bikes').text(infos.bikes);
-				$templateCloned.find('.available-stands').text(infos.stands);
-
-				$infoWindowsWrapper.append($templateCloned);
-
-				var marker = new google.maps.Marker({
-					position: station.position,
-					map: map,
-					icon: getMarker(infos.bikes)
-				});
-				attachInfoWindow(marker, $templateCloned, infos);
-				return marker;
-			});
-
-
-		});
-}
-
-function getMarker(availableBikes) {
-	return (availableBikes > 0) ? 'img/green_marker.png' : 'img/red_marker.png';
-}
-
-function attachInfoWindow(marker, $templateCloned, infos) {
-
-	var infoWindow = new google.maps.InfoWindow({
-		content: $templateCloned[0]
-	});
-
-	function getColor(dataToColor) {
-		switch (true) {
-			case dataToColor === 'Oui':
-			case dataToColor > 5:
-				return 'green';
-				break;
-			case dataToColor === 'Non':
-			case dataToColor < 1:
-				return 'red';
-				break;
-			default:
-				return 'orange';
-				break;
-		}
-	}
-
-
-
-	marker.addListener('click', function () {
-		infoWindow.open(map, marker);
-		$('#infos-station .station-id').text(infos.name);
-		$('#infos-station .station-name').text(infos.address);
-		$('#infos-station .available-bikes').text(infos.bikes).css('color', getColor(infos.bikes));
-		$('#infos-station .available-stands').text(infos.stands);
-		$('#infos-station .banking').text(infos.banking).css('color', getColor(infos.banking));
-		$('#infos-station .bonus').text(infos.bonus);
-
-	});
-}
-
-
-
 //---------------------------------------------------------------------------
 //
 //
@@ -279,6 +168,7 @@ var $DOM = {
 	slideDescription: $('#slide-description'),
 	homeSection: $('#home'),
 	bookingSection: $('#booking'),
+	mapSection: $('#map-container'),
 	formSection: $('#form'),
 	dataColored: $('.data-color'),
 	registeredBlock: $('#registered'),
@@ -496,20 +386,24 @@ function bookingTimer() {
 };
 
 function sizing() {
+	//canvas has to be (re)size with js for it works
 	signature.canvas.attr('width', $DOM.canvasWrapper.width());
-	$DOM.panel.each(function () {
-		$(this).children('.panel-body').height($(this).height() - $(this).children('.panel-heading').height() - 20); //Need to substract the padding of .panel-heading
-	});
+
+	//To display the .panel-body at the entire screen, we need to substract the .panel-heading's padding
+	var mapHeight = ($DOM.mapSection.height() - $DOM.mapSection.find('.panel-heading').height() - 20)
+	$DOM.mapSection.find('.panel-body').height(mapHeight);
 }
+
+
 //--------------------------------------------------------------------
 //
 //
 //
 //
 
-/******************************/
+/**********************************/
 /****** DOM EVENTS LISTENERS ******/
-/******************************/
+/**********************************/
 
 $DOM.forthButton.click(function () {
 	slidesCounter++;
@@ -568,7 +462,7 @@ $DOM.formSubmit.click(function () {
 			formIsFullfill++;
 		}
 	});
-	if (formIsFullfill === 3 && $availableBikes.eq(0).text() > 0) {
+	if (formIsFullfill === 3 && GoogleMaps.$availableBikes.eq(0).text() > 0) {
 		dataBase.add($DOM.formValues.name.val(), $DOM.formValues.surname.val(), signature.done, $DOM.stationDatas.id.text(), $DOM.stationDatas.address.text(), $DOM.stationDatas.bikes.text());
 		$DOM.registeredBlock.css('display', 'block');
 		$DOM.registeredBlock.find('.station-id').text(dataBase.station.name);

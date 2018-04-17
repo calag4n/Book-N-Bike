@@ -9,6 +9,7 @@ body {
 	font-family: sans-serif;
 	color: white;
 	height: auto;
+	background-color: #202020;
 }
 
 h2,
@@ -26,13 +27,11 @@ figcaption {
 }
 
 .row {
-	background-color: #202020;
 	align-items: center;
 	justify-content: center;
 }
 
 [class*="col-"] {
-	background-color: #202020;
 	height: 100%;
 	padding: 0;
 }
@@ -52,9 +51,48 @@ figcaption {
 
 .panel {
 	margin-bottom: 0;
+	-moz-box-shadow: 1px 2px 10px 3px #656565;
+	-webkit-box-shadow: 1px 2px 10px 3px #656565;
+	-o-box-shadow: 1px 2px 10px 3px #656565;
+	box-shadow: 1px 2px 10px 3px #656565;
 }
 
+.panel-body {
+	height: auto;
+}
 
+@keyframes backgroundLight{
+	from{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0), rgba(32, 32, 32, 0)), url('../img/bg.png');
+	}
+	10%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.1), rgba(32, 32, 32, 0.1)), url('../img/bg.png');}
+	20%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.2), rgba(32, 32, 32, 0.2)), url('../img/bg.png');}
+	
+	30%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.3), rgba(32, 32, 32, 0.3)), url('../img/bg.png');}
+	
+	40%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.4), rgba(32, 32, 32, 0.4)), url('../img/bg.png');}
+	
+	50%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.5), rgba(32, 32, 32, 0.5)), url('../img/bg.png');
+	}
+	60%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.6), rgba(32, 32, 32, 0.6)), url('../img/bg.png');}
+	
+	70%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.7), rgba(32, 32, 32, 0.7)), url('../img/bg.png');}
+	
+	80%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.8), rgba(32, 32, 32, 0.8)), url('../img/bg.png');}
+	90%{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.9), rgba(32, 32, 32, 0.9)), url('../img/bg.png');}
+	to{
+		background: linear-gradient(0deg, rgba(32, 32, 32, 1), rgba(32, 32, 32, 1)), url('../img/bg.png');
+	}
+}
 /****************************************/
 
 /***************** HOME *****************/
@@ -64,7 +102,6 @@ figcaption {
 #home {
 	padding: 4% 1% 2% 1%;
 	height: 100vh;
-
 }
 
 #home > .col-xs-1 {
@@ -87,10 +124,16 @@ figcaption {
 	outline: inherit;
 }
 
+#forth-button {
+	position: relative;
+	right: 1vw;
+}
+
 #scrolldown-to-map {
 	position: absolute;
 	bottom: 5px;
 	transition: opacity 2s;
+	right: 4vw;
 }
 
 #scrollup-to-home {
@@ -103,7 +146,7 @@ figcaption {
 
 #scrolldown-to-form {
 	position: absolute;
-	right: 6vw;
+	right: 12vw;
 	bottom: 5px;
 	opacity: 0;
 	pointer-events: none;
@@ -147,7 +190,15 @@ figcaption {
 
 #booking {
 	overflow: hidden;
+	background: linear-gradient(0deg, rgba(32, 32, 32, 0.8), rgba(32, 32, 32, 0.8)), url('../img/bg.png');	
 }
+
+#booking:hover {
+	background: linear-gradient(0deg, rgba(32, 32, 32, 0), rgba(32, 32, 32, 0)), url('../img/bg.png');
+	transition: background-image 3s;
+}
+
+
 
 #map {
 	overflow: hidden;
@@ -156,32 +207,34 @@ figcaption {
 
 #map-container {
 	height: 100vh;
+	box-shadow: none;
 }
 
 #map-container .panel-body {
 	padding: 0;
+
 }
 
 #form {
 	padding: 0;
-	background-color: #202020;
 	position: initial;
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 }
 
 #form > form {
-	height: 60%;
 	color: #337ab7;
 }
 
-#infos-station {
-	height: 40vh;
+form .panel-body {
+	padding-bottom: 40px;
 }
 
 #infos-station .panel-body {
 
 	font-weight: 700;
-	padding-left: 0;
 }
 
 #info-windows-wrapper {
@@ -202,7 +255,7 @@ figcaption {
 	font-family: sans-serif;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
+	justify-content: flex-start;
 	background-color: inherit;
 	color: black;
 }
@@ -280,17 +333,6 @@ form .panel-body {
 	transition-duration: 1s
 }
 
-/****************************************/
-
-/********* Screen Width < 992px *********/
-
-/****************************************/
-
-@media screen and (max-width: 991px) {
-	#registered {
-		width: 50%;
-	}
-}
 
 
 /****************************************/
@@ -346,19 +388,18 @@ form .panel-body {
 	}
 
 	#form {
-		height: 150vh;
+		height: auto;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 		overflow: hidden;
 	}
 	#infos-station {
-		height: 50vh;
+		height: auto;
 	}
 	#form > form {
-		height: 60vh;
+		height: auto;
 	}
-
 }
 
 /****************************************/
