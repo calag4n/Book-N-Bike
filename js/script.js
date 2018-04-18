@@ -17,19 +17,20 @@
 /*----------------------*/
 
 /****** PWA need to register at browser's Service Worker ******/
-/*
+
 if ('serviceWorker' in navigator) {
-	$(function () {
-		navigator.serviceWorker.register('js/service_worker.js').then(
-			function (registration) {
+
+	navigator.serviceWorker.register('service_worker.js', {
+			scope: '/'
+		})
+		.then(function (registration) {
 				//Succes
-				console.log('serviceWorker registration successful with scope: ', registration.scope)
+				console.log('serviceWorker registrered successfully with scope: ', registration.scope)
 			},
 			function (error) {
 				console.log('serviceWorker registration failed: ', error)
 			});
-	});
-}*/
+}
 //--------------------------------------------------------------------
 //
 //
