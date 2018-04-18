@@ -61,38 +61,47 @@ figcaption {
 	height: auto;
 }
 
-@keyframes backgroundLight{
-	from{
+@keyframes backgroundLight {
+	from {
 		background: linear-gradient(0deg, rgba(32, 32, 32, 0), rgba(32, 32, 32, 0)), url('../img/bg.png');
 	}
-	10%{
-		background: linear-gradient(0deg, rgba(32, 32, 32, 0.1), rgba(32, 32, 32, 0.1)), url('../img/bg.png');}
-	20%{
-		background: linear-gradient(0deg, rgba(32, 32, 32, 0.2), rgba(32, 32, 32, 0.2)), url('../img/bg.png');}
-	
-	30%{
-		background: linear-gradient(0deg, rgba(32, 32, 32, 0.3), rgba(32, 32, 32, 0.3)), url('../img/bg.png');}
-	
-	40%{
-		background: linear-gradient(0deg, rgba(32, 32, 32, 0.4), rgba(32, 32, 32, 0.4)), url('../img/bg.png');}
-	
-	50%{
+	10% {
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.1), rgba(32, 32, 32, 0.1)), url('../img/bg.png');
+	}
+	20% {
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.2), rgba(32, 32, 32, 0.2)), url('../img/bg.png');
+	}
+
+	30% {
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.3), rgba(32, 32, 32, 0.3)), url('../img/bg.png');
+	}
+
+	40% {
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.4), rgba(32, 32, 32, 0.4)), url('../img/bg.png');
+	}
+
+	50% {
 		background: linear-gradient(0deg, rgba(32, 32, 32, 0.5), rgba(32, 32, 32, 0.5)), url('../img/bg.png');
 	}
-	60%{
-		background: linear-gradient(0deg, rgba(32, 32, 32, 0.6), rgba(32, 32, 32, 0.6)), url('../img/bg.png');}
-	
-	70%{
-		background: linear-gradient(0deg, rgba(32, 32, 32, 0.7), rgba(32, 32, 32, 0.7)), url('../img/bg.png');}
-	
-	80%{
-		background: linear-gradient(0deg, rgba(32, 32, 32, 0.8), rgba(32, 32, 32, 0.8)), url('../img/bg.png');}
-	90%{
-		background: linear-gradient(0deg, rgba(32, 32, 32, 0.9), rgba(32, 32, 32, 0.9)), url('../img/bg.png');}
-	to{
+	60% {
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.6), rgba(32, 32, 32, 0.6)), url('../img/bg.png');
+	}
+
+	70% {
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.7), rgba(32, 32, 32, 0.7)), url('../img/bg.png');
+	}
+
+	80% {
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.8), rgba(32, 32, 32, 0.8)), url('../img/bg.png');
+	}
+	90% {
+		background: linear-gradient(0deg, rgba(32, 32, 32, 0.9), rgba(32, 32, 32, 0.9)), url('../img/bg.png');
+	}
+	to {
 		background: linear-gradient(0deg, rgba(32, 32, 32, 1), rgba(32, 32, 32, 1)), url('../img/bg.png');
 	}
 }
+
 /****************************************/
 
 /***************** HOME *****************/
@@ -163,6 +172,13 @@ figcaption {
 	margin: 0;
 	font-size: 4em;
 	z-index: 99;
+	transition: all 2s;
+}
+
+#slide-title:hover {
+	text-shadow: 0 0 rgba(255, 255, 255, 0), -45px -45px 0 red, -30px -30px 0 orange, -15px -15px 0 yellow, 0 0 0 green, 15px 15px 0 blue, 30px 30px 0 indigo, 45px 45px 0 violet;
+	transition: all 2s;
+	color: green;
 }
 
 #slide-content {
@@ -190,7 +206,7 @@ figcaption {
 
 #booking {
 	overflow: hidden;
-	background: linear-gradient(0deg, rgba(32, 32, 32, 0.8), rgba(32, 32, 32, 0.8)), url('../img/bg.png');	
+	background: linear-gradient(0deg, rgba(32, 32, 32, 0.8), rgba(32, 32, 32, 0.8)), url('../img/bg.png');
 }
 
 #booking:hover {
@@ -210,10 +226,13 @@ figcaption {
 	box-shadow: none;
 }
 
+
+
 #map-container .panel-body {
 	padding: 0;
 
 }
+
 
 #form {
 	padding: 0;
@@ -229,7 +248,7 @@ figcaption {
 }
 
 form .panel-body {
-	padding-bottom: 40px;
+	padding-bottom: 74px;
 }
 
 #infos-station .panel-body {
