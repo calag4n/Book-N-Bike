@@ -18,19 +18,7 @@
 
 /****** PWA need to register at browser's Service Worker ******/
 
-if ('serviceWorker' in navigator) {
 
-	navigator.serviceWorker.register('service_worker.js', {
-			scope: '/'
-		})
-		.then(function (registration) {
-				//Succes
-				console.log('serviceWorker registrered successfully with scope: ', registration.scope)
-			},
-			function (error) {
-				console.log('serviceWorker registration failed: ', error)
-			});
-}
 //--------------------------------------------------------------------
 //
 //
@@ -82,7 +70,25 @@ var $DOM = {
 
 //--------------------------------------------------------------------
 
+var app = (function () {
 
+	var me = {};
+
+	me.timer = function () {
+		var totalSeconds = Math.floor(1200 - ((Date.now() - DataBase.registeredTime) / 1000)),
+			seconds = totalSeconds % 60;
+		totalSeconds = (totalSeconds - seconds) / 60;
+		var minutes = totalSeconds % 60;
+		if (seconds > -1 && minutes > -1)
+			$DOM.registeredBlock.css('display', 'block');
+		else
+			$DOM.registeredBlock.css('display', 'none');
+		$DOM.timerZone.text(minutes + ' min ' + seconds + ' sec.');
+	};
+
+
+	return me;
+})();
 
 
 
@@ -96,17 +102,7 @@ var $DOM = {
 
 
 
-function bookingTimer() {
-	var totalSeconds = Math.floor(1200 - ((Date.now() - DataBase.registeredTime) / 1000)),
-		seconds = totalSeconds % 60;
-	totalSeconds = (totalSeconds - seconds) / 60;
-	var minutes = totalSeconds % 60;
-	if (seconds > -1 && minutes > -1)
-		$DOM.registeredBlock.css('display', 'block');
-	else
-		$DOM.registeredBlock.css('display', 'none');
-	$DOM.timerZone.text(minutes + ' min ' + seconds + ' sec.');
-};
+
 
 function sizing() {
 	//canvas has to be (re)size with js for it works
@@ -177,13 +173,22 @@ $DOM.formSubmit.click(function () {
 		}
 	});
 
+	//If all form controls are filled and the choosen station got at least one bike
 	if (formIsFullfill === 3 && GoogleMaps.$availableBikes.eq(0).text() > 0) {
 
-		DataBase.add($DOM.formValues.name.val(), $DOM.formValues.surname.val(), Signature.done, $DOM.stationDatas.id.text(), $DOM.stationDatas.address.text(), $DOM.stationDatas.bikes.text());
+		var name = $DOM.formValues.name.val(),
+			surname = $DOM.formValues.surname.val(),
+			signed = Signature.done,
+			stationName = $DOM.stationDatas.id.text(),
+			stationAddress = $DOM.stationDatas.address.text(),
+			bikes = $DOM.stationDatas.bikes.text();
+
+		//Saving datas
+		DataBase.add(name, surname, signed, stationName, stationAddress, bikes);
 
 		// Display the registered window with timer
 		$DOM.registeredBlock.css('display', 'block');
-		$DOM.registeredBlock.find('.station-id').text(DataBase.station.name);
+		$DOM.registeredBlock.find('.station-id').text(stationName);
 
 	}
 });

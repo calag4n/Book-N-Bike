@@ -130,8 +130,25 @@
 			<p>Places libres:<span class="available-stands blue"></span></p>
 		</div>
 	</div>
+	<script>
+		if ('serviceWorker' in navigator) {
 
-	<script src="js/jquery-3.2.1.js"></script>
+			navigator.serviceWorker.register('service_worker.js', {
+					scope: '/'
+				})
+				.then(function(registration) {
+						//Succes
+						console.log('serviceWorker registrered successfully with scope: ', registration.scope)
+					},
+					function(error) {
+						console.log('serviceWorker registration failed: ', error)
+					});
+		}
+
+	</script>
+
+	<script src="service_worker.js"></script>
+	<script src="js/jquery-3.3.1.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/ajax.js"></script>
 	<script src="js/GoogleMaps.js"></script>

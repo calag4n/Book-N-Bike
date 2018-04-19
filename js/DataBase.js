@@ -55,7 +55,7 @@ var DataBase = (function () {
 			} else {
 				console.log("This store is empty");
 			}
-			timer = setInterval(bookingTimer, 1000);
+			setInterval(app.timer, 1000);
 		};
 	};
 
