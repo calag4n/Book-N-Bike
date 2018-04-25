@@ -3,7 +3,7 @@
 /*---------------------------*/
 //
 // I've choose to use Indexed DataBase because it's requests are
-// async counter to LocalStorage or SessionStorage.
+// async, that is not true with LocalStorage or SessionStorage.
 //
 // Also, IDB is the browser storage that is advise by Google Lighthouse
 // in their Progressive Web Apps policies.
@@ -12,7 +12,7 @@
 var DataBase = (function () {
 
 	if (!window.indexedDB) //if IDB isn't supported by browser
-		alert('Votre navigateur ne supporte pas une version stable d\'IndexedDB. Quelques fonctionnalités ne seront pas disponibles.');
+		alert('Votre navigateur ne supporte pas une version stable d\'IndexedDB. Certaines fonctionnalités ne seront pas disponibles. Veuillez mettre à jour votre navigateur.');
 
 
 	var me = {
@@ -55,7 +55,7 @@ var DataBase = (function () {
 			} else {
 				console.log("This store is empty");
 			}
-			setInterval(app.timer, 1000);
+			setInterval(App.timer, 1000);
 		};
 	};
 
@@ -100,7 +100,6 @@ var DataBase = (function () {
 	var resultedDatas,
 		timer,
 		request = window.indexedDB.open("BookNbike", 1);
-
 
 	/****** Methods of request (sub)objects ******/
 	request.onerror = function (event) {

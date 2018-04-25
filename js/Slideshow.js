@@ -51,9 +51,22 @@ var Slideshow = (function () {
 	var slides = [];
 
 	// Each title and description is firstly store in array 
-	var titles = ["Bienvenue sur Book-N-Bike", 'Application multi-plateforme.', '1. Parcourez la carte pour trouver une station.', '2. Séléctionnez une station pour obtenir plus d\'infos.', "3. Remplissez le formulaire, signez, c'est réservé !", ];
+	var titles = [
+		'Bienvenue sur Book-N-Bike',
+		'Application multi-plateforme.',
+		'1. Parcourez la carte pour trouver une station.',
+		'2. Séléctionnez une station pour obtenir plus d\'infos.',
+		'3. Remplissez le formulaire, signez, c\'est réservé !'];
 
-	var descriptions = ["Vous déplacer en ville n'aura jamais été aussi simple. <br>Suivez le guide...", "Utilisez Book-N-Bike où que vous soyez, depuis n'importe quel périphérique en seulement 3 étapes !", 'En un coup d\'oeil repérez toutes les stations près de chez vous.', "Ne vous déplacez plus pour rien, grace à Book-N-Bike vous savez en direct si un vélo est disponible à la station de votre choix.", 'Après envoi du formulaire, votre city bike vous est résevé pendant 20 minutes. <br>Chaque nouvelle réservation annule la précédente.'];
+	var descriptions = [
+		"Vous déplacer en ville n'aura jamais été aussi simple. <br>Suivez le guide...",
+		"Utilisez Book-N-Bike où que vous soyez, depuis n'importe quel périphérique en seulement 3 étapes !",
+
+		'En un coup d\'oeil repérez toutes les stations près de chez vous.',
+
+		"Ne vous déplacez plus pour rien, grace à Book-N-Bike vous savez en direct si un vélo est disponible à la station de votre choix.",
+
+		'Après envoi du formulaire, votre city bike vous est résevé pendant 20 minutes. <br>Chaque nouvelle réservation annule la précédente.'];
 
 	// Make every slide an object by a prototype
 	var slidePrototype = {

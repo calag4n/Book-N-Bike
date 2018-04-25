@@ -18,7 +18,7 @@ var GoogleMaps = (function () {
 	$('#map').html('<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAo-wOejIa5KeD-XsqSQA9LN79efwmxOkY&callback=GoogleMaps.init" async defer></script>');
 
 
-	/* PUBLIC FONCTIONS
+	/* PUBLIC FUNCTIONS
 	-----------------------------------------------------------*/
 
 	me.init = function () {
@@ -31,10 +31,11 @@ var GoogleMaps = (function () {
 			zoom: 15
 		});
 
-		ajaxGet("https://api.jcdecaux.com/vls/v1/stations?contract=lyon&apiKey=51d504f995e48a567cd425dc85f0771829b79a65",
+		// GET AJAX request
+		$.get("https://api.jcdecaux.com/vls/v1/stations?contract=lyon&apiKey=51d504f995e48a567cd425dc85f0771829b79a65",
 
-			function (result) {
-				var stations = JSON.parse(result);
+			// Callback
+			function (stations) {
 
 				//Browse through the array for making a marker for each station
 				var markers = stations.map(function (station) {
@@ -67,28 +68,11 @@ var GoogleMaps = (function () {
 					return marker;
 				});
 
-			});
+			}, "json");
 	}
 
 	/* PRIVATE FUNCTIONS
 	-----------------------------------------------------------*/
-
-	//Simple ajax request
-	function ajaxGet(url, callback) {
-		var req = new XMLHttpRequest();
-		req.open("GET", url);
-		req.addEventListener("load", function () {
-			if (req.status >= 200 && req.status < 400) {
-				callback(req.responseText);
-			} else {
-				console.error(req.status + " " + req.statusText + " " + url);
-			}
-		});
-		req.addEventListener("error", function () {
-			console.error("Erreur réseau avec l'URL " + url);
-		});
-		req.send(null);
-	}
 
 	//Will display either red or green icon according to bikes availability
 	function getMarker(availableBikes) {
