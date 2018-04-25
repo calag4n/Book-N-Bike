@@ -46,7 +46,8 @@ figcaption {
 }
 
 .blue-themed {
-	color: #85CBF8;
+	color: #8a6d3b;
+	font-weight: 700;
 }
 
 .panel {
@@ -209,11 +210,6 @@ figcaption {
 	background: linear-gradient(0deg, rgba(32, 32, 32, 0.8), rgba(32, 32, 32, 0.8)), url('../img/bg.png');
 }
 
-#booking:hover {
-	background: linear-gradient(0deg, rgba(32, 32, 32, 0), rgba(32, 32, 32, 0)), url('../img/bg.png');
-	transition: background-image 3s;
-}
-
 
 
 #map {
@@ -230,9 +226,7 @@ figcaption {
 
 #map-container .panel-body {
 	padding: 0;
-
 }
-
 
 #form {
 	padding: 0;
@@ -243,17 +237,16 @@ figcaption {
 	justify-content: space-around;
 }
 
-#form > form {
-	color: #337ab7;
+#infos-station .panel-body {
+	background-color: #ffedc1;
+	font-weight: 700;
+	color: black;
+
 }
 
 form .panel-body {
 	padding-bottom: 74px;
-}
-
-#infos-station .panel-body {
-
-	font-weight: 700;
+	background-color: #85CBF8
 }
 
 #info-windows-wrapper {
@@ -276,7 +269,6 @@ form .panel-body {
 	flex-direction: column;
 	justify-content: flex-start;
 	background-color: inherit;
-	color: black;
 }
 
 span.control-label {
@@ -297,6 +289,7 @@ canvas {
 	border-radius: 4px;
 	z-index: 96;
 	color: black;
+	background-color: white;
 }
 
 .mb-3 {
@@ -305,6 +298,7 @@ canvas {
 
 form .panel-body {
 	font-size: 0.8em;
+	background-color:
 }
 
 #biker {

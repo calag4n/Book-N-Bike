@@ -83,21 +83,35 @@ var Slideshow = (function () {
 		slides[slideNum].init(titles[slideNum], slideNum, descriptions[slideNum])
 	};
 
+	function nextSlide() {
+		slidesCounter++;
+		$backButton.removeClass('inactive');
+		me.loadSlide();
+	}
+
+	function previousSlide() {
+		slidesCounter--;
+		$forthButton.removeClass('inactive')
+		me.loadSlide();
+	}
 
 	/* EVENT LISTENERS
 	---------------------------------------------*/
 
 	$forthButton.click(function () {
-		slidesCounter++;
-		$backButton.removeClass('inactive');
-		me.loadSlide();
+		nextSlide();
 	});
 
 	$backButton.click(function () {
-		slidesCounter--;
-		$forthButton.removeClass('inactive')
-		me.loadSlide();
+		previousSlide();
 	});
+
+	$(window).keydown(function (e) {
+		if (e.keyCode === 39) // Right arrow
+			nextSlide();
+		else if (e.keyCode === 37) // Left arrow
+			previousSlide();
+	})
 
 	return me;
 })();
