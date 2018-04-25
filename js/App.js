@@ -128,7 +128,7 @@ var App = (function () {
 	});
 
 	// As requested in the specifications, the data must be deleted when browser has been closed
-	$(window).unload(function () {
+	$(window).on('beforeunload', function () {
 		DataBase.remove();
 	})
 
