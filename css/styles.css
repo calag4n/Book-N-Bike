@@ -184,9 +184,8 @@ figcaption {
 
 #slide-content {
 	height: 60%;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
+	display: flex;
+	justify-content: center;
 }
 
 #slide-description {
@@ -197,7 +196,14 @@ figcaption {
 	z-index: 98;
 }
 
+img {
+	position: relative;
+	height: 100%;
+}
 
+.inactive-img {
+	display: none;
+}
 
 /****************************************/
 
@@ -299,18 +305,6 @@ canvas {
 form .panel-body {
 	font-size: 0.8em;
 	background-color:
-}
-
-#biker {
-	height: 30%;
-	background-image: url(../img/biker-nobg.png);
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-	position: relative;
-	bottom: 60px;
-	right: -120px;
-	pointer-events: none;
 }
 
 #registered {
