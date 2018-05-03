@@ -19,7 +19,9 @@ var Slideshow = (function () {
 		$slideContent.animate({
 			opacity: 0
 		}, 200, function () {
-			$slideContent.css('background-image', slides[slidesCounter].url);
+			//$slideContent.css('background-image', slides[slidesCounter].url);
+			$slideContent.find('img').addClass('inactive-img');
+			$slideContent.find('#slide-' + slidesCounter).removeClass('inactive-img');
 		}).animate({
 			opacity: 1
 		}, function () {
