@@ -54,6 +54,7 @@ var App = (function () {
 
 	var me = {};
 
+
 	/* PUBLIC FUNCTIONS
 	------------------------------------------------------------*/
 
@@ -70,8 +71,11 @@ var App = (function () {
 		$DOM.timerZone.text(minutes + ' min ' + seconds + ' sec.');
 	};
 
+
 	/* PRIVATE FUNCTIONS
 	------------------------------------------------------------*/
+
+	var $lazyLoadImg = $('.lazy-load');
 
 	function sizing() {
 		//canvas has to be (re)size with js for working
@@ -82,6 +86,7 @@ var App = (function () {
 		$DOM.mapSection.find('.panel-body').height(mapHeight);
 	}
 
+
 	/* EVENTS HANDLERS
 	--------------------------------------------------------------*/
 
@@ -89,6 +94,9 @@ var App = (function () {
 	$(function () {
 		Slideshow.loadSlide();
 		sizing();
+		$lazyLoadImg.each(function () {
+			$(this).attr('src', $(this).attr('data-src'));
+		});
 	});
 
 	$(window).resize(function () {
@@ -162,6 +170,7 @@ var App = (function () {
 				stationName = $DOM.stationDatas.id.text(),
 				stationAddress = $DOM.stationDatas.address.text(),
 				bikes = $DOM.stationDatas.bikes.text();
+
 
 			//Saving datas
 			DataBase.add(name, surname, signed, stationName, stationAddress, bikes);

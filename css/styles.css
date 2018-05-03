@@ -307,18 +307,6 @@ form .panel-body {
 	background-color:
 }
 
-#biker {
-	height: 30%;
-	background-image: url(../img/biker-nobg.png);
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
-	position: relative;
-	bottom: 60px;
-	right: -120px;
-	pointer-events: none;
-}
-
 #registered {
 	display: none;
 	overflow: hidden;

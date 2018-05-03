@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="theme-color" content="#97E0BB" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="Description" content="Book-N-Bike, 
     The purpose of this Progressive Web App allow users to book a city-bike in the city of Lyon, France. Developer: S. Dieu">
 
@@ -22,7 +22,7 @@
 	<div class="container-fluid">
 		<section id="home" class="row">
 			<div class="col-xs-1 slide-arrows-container">
-				<button id="back-button" class="green-arrow inactive">
+				<button id="back-button" aria-label="Retour" class="green-arrow inactive">
 					<i class="fa fa-angle-left"></i>
 				</button>
 			</div>
@@ -31,10 +31,10 @@
 					<h2 id="slide-title" class="col-xs-12"></h2>
 					<figure id="slide-content" class="col-xs-12">
 						<img id="slide-0" class="inactive-img" src="img/slide-0.png" />
-						<img id="slide-1" class="inactive-img" src="img/slide-1.png" />
-						<img id="slide-2" class="inactive-img" src="img/slide-2.png" />
-						<img id="slide-3" class="inactive-img" src="img/slide-3.png" />
-						<img id="slide-4" class="inactive-img" src="img/slide-4.png" />
+						<img id="slide-1" class="inactive-img lazy-load" src="img/blank.png" data-src="img/slide-1.png" />
+						<img id="slide-2" class="inactive-img lazy-load" src="img/blank.png" data-src="img/slide-2.png" />
+						<img id="slide-3" class="inactive-img lazy-load" src="img/blank.png" data-src="img/slide-3.png" />
+						<img id="slide-4" class="inactive-img lazy-load" src="img/blank.png" data-src="img/slide-4.png" />
 
 					</figure>
 
@@ -42,10 +42,10 @@
 				</div>
 			</div>
 			<div class="col-xs-1 slide-arrows-container">
-				<button id="forth-button" class="green-arrow">
+				<button id="forth-button" aria-label="Avancer" class="green-arrow">
 					<i class="fa fa-angle-right"></i>
 				</button>
-				<button id="scrolldown-to-map" class="green-arrow scroll-to-map inactive">
+				<button id="scrolldown-to-map" aria-label="vers la carte" class="green-arrow scroll-to-map inactive">
 					<i class="fa fa-angle-double-down"></i>
 				</button>
 			</div>
@@ -58,14 +58,14 @@
 					<h3 class="panel-title">Carte</h3>
 				</div>
 				<div class="panel-body">
-					<button id="scrollup-to-home" class="green-arrow">
+					<button id="scrollup-to-home" aria-label="vers l'accueil" class="green-arrow">
 						<i class="fa fa-angle-double-up"></i>
 					</button>
 
 					<div id="map">
 					</div>
 
-					<button id="scrolldown-to-form" class="green-arrow">
+					<button id="scrolldown-to-form" aria-label="vers le formulaire" class="green-arrow">
 						<i class="fa fa-angle-double-down"></i>
 					</button>
 				</div>
@@ -78,7 +78,7 @@
 						<h3 class="panel-title">Station: <span class="station-id"></span></h3>
 					</div>
 					<div class="panel-body">
-						<button id="scrollup-to-map" class="green-arrow scroll-to-map col-xs-2">
+						<button id="scrollup-to-map" aria-label="retour a la carte" class="green-arrow scroll-to-map col-xs-2">
 						<i class="fa fa-angle-double-up"></i>
 						</button>
 						<div class="col-xs-10" id="datas">
@@ -112,9 +112,9 @@
 							<span class="control-label">Une signature est obligatoire
 							</span>
 						</div><br>
-						<button id="book-up" class="btn btn-primary" onclick="return false;">Réserver</button>
+						<button id="book-up" aria-label="Reserver" class="btn btn-primary" onclick="return false;">Réserver</button>
 					</div>
-					<figure src="img/biker-nobg.png" id="biker"></figure>
+
 				</form>
 				<div id="registered" class="panel panel-danger">
 					<div class="panel-heading">
@@ -154,14 +154,14 @@
 
 	</script>
 
-	<script src="service_worker.js"></script>
-	<script src="js/jquery-3.3.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/GoogleMaps.js"></script>
-	<script src="js/DataBase.js"></script>
-	<script src="js/Slideshow.js"></script>
-	<script src="js/Signature.js"></script>
-	<script src="js/App.js"></script>
+
+	<script src="js/jquery-3.3.1.min.js" defer></script>
+	<script src="js/bootstrap.min.js" defer></script>
+	<script src="js/GoogleMaps.js" async></script>
+	<script src="js/DataBase.js" async></script>
+	<script src="js/Slideshow.js" async></script>
+	<script src="js/Signature.js" async></script>
+	<script src="js/App.js" async></script>
 </body>
 
 
