@@ -282,15 +282,15 @@ span.control-label {
 	font-size: 8pt;
 }
 
-.has-error > canvas {
+.has-error > #canvas {
 	border-color: #a94442;
 }
 
-.has-success > canvas {
+.has-success > #canvas {
 	border-color: #3c763d;
 }
 
-canvas {
+#canvas {
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	z-index: 96;
