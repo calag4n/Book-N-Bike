@@ -93,6 +93,8 @@ var App = (function () {
 	// Page loaded, script begin 
 	$(function () {
 		Slideshow.loadSlide();
+		
+		console.log(DataBase.user.name);
 		sizing();
 		$lazyLoadImg.each(function () {
 			$(this).attr('src', $(this).attr('data-src'));
@@ -137,7 +139,7 @@ var App = (function () {
 
 	// As requested in the specifications, the data must be deleted when browser has been closed
 	$(window).on('beforeunload', function () {
-		DataBase.remove();
+		
 	})
 
 

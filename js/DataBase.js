@@ -2,7 +2,7 @@
 /*----- IndexedDataBase -----*/
 /*---------------------------*/
 //
-// I've choose to use Indexed DataBase because it's requests are
+// I've chose to use Indexed DataBase because its requests are
 // async, that is not true with LocalStorage or SessionStorage.
 //
 // Also, IDB is the browser storage that is advise by Google Lighthouse
@@ -50,6 +50,8 @@ var DataBase = (function () {
 				DataBase.station.name = request.result.stationName;
 				DataBase.station.address = request.result.address;
 				DataBase.station.bikes = request.result.bikes;
+				DataBase.user.name = request.result.name;
+				DataBase.user.surname = request.result.surname ;
 				$DOM.registeredBlock.find('.station-id').text(DataBase.station.name);
 				$DOM.registeredBlock.find('.station-name').text(DataBase.station.address);
 			} else {
@@ -87,7 +89,7 @@ var DataBase = (function () {
 	me.remove = function () {
 		var request = resultedDatas.transaction(["station"], "readwrite")
 			.objectStore("station")
-			.delete(1);
+			.delete('stationName');
 
 		request.onsuccess = function (event) {
 			console.log("IDB entry has been removed");
