@@ -94,11 +94,14 @@ var App = (function () {
 	$(function () {
 		Slideshow.loadSlide();
 		
-		console.log(DataBase.user.name);
+		DataBase.update();
 		sizing();
 		$lazyLoadImg.each(function () {
 			$(this).attr('src', $(this).attr('data-src'));
 		});
+
+		$DOM.formValues.name.val(DataBase.user.name);
+		$DOM.formValues.surname.val(DataBase.user.surname);
 	});
 
 	$(window).resize(function () {

@@ -54,6 +54,7 @@ var DataBase = (function () {
 				DataBase.user.surname = request.result.surname ;
 				$DOM.registeredBlock.find('.station-id').text(DataBase.station.name);
 				$DOM.registeredBlock.find('.station-name').text(DataBase.station.address);
+
 			} else {
 				console.log("This store is empty");
 			}
@@ -89,13 +90,41 @@ var DataBase = (function () {
 	me.remove = function () {
 		var request = resultedDatas.transaction(["station"], "readwrite")
 			.objectStore("station")
-			.delete('stationName');
+			.delete(1);
 
 		request.onsuccess = function (event) {
 			console.log("IDB entry has been removed");
 		};
 	};
 
+	me.update = function(){
+		var store = resultedDatas.transaction(["station"], "readwrite")
+		.objectStore("station");
+		var request = store.get(1);
+
+		request.onsuccess = function(){
+			if (request.result){
+				var data = request.result;
+				console.log(data);
+				data.address = "";
+				data.bikes = "";
+				data.date ="";
+				data.signed ="";
+				data.stationName ="";
+				
+				var updatedData = store.put(data);
+				updatedData.onsuccess = function(){
+					console.log("Data updated : " + data);
+				};
+			}else{
+				console.log("No entry yet");
+			}
+		};
+
+		request.onerror = function () {
+			console.log("No entry yet");
+		};
+	};
 	/* PRIVATE FUNCTIONS
 	-----------------------------------------------------------*/
 
@@ -118,8 +147,8 @@ var DataBase = (function () {
 		var objectStore = resultedDatas.createObjectStore("station", {
 				keyPath: "id",
 				autoIncrement: false
-			}),
-			index = objectStore.createIndex('NameIndex', 'name');
+			})//,
+			// index = objectStore.createIndex('NameIndex', 'name');
 	};
 
 	return me;
