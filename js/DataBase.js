@@ -2,7 +2,7 @@
 /*----- IndexedDataBase -----*/
 /*---------------------------*/
 //
-// I've choose to use Indexed DataBase because it's requests are
+// I've chose to use Indexed DataBase because its requests are
 // async, that is not true with LocalStorage or SessionStorage.
 //
 // Also, IDB is the browser storage that is advise by Google Lighthouse
@@ -32,7 +32,7 @@ var DataBase = (function () {
 	-----------------------------------------------------------*/
 
 	me.read = function () {
-		var transaction = resultedDatas.transaction(["station"]);
+		var transaction = resultedData.transaction(["station"]);
 		var objectStore = transaction.objectStore("station");
 		var request = objectStore.get(1);
 
@@ -50,8 +50,11 @@ var DataBase = (function () {
 				DataBase.station.name = request.result.stationName;
 				DataBase.station.address = request.result.address;
 				DataBase.station.bikes = request.result.bikes;
+				DataBase.user.name = request.result.name;
+				DataBase.user.surname = request.result.surname ;
 				$DOM.registeredBlock.find('.station-id').text(DataBase.station.name);
 				$DOM.registeredBlock.find('.station-name').text(DataBase.station.address);
+
 			} else {
 				console.log("This store is empty");
 			}
@@ -61,7 +64,7 @@ var DataBase = (function () {
 
 	me.add = function (name, surname, signed, stationName, address, bikes) {
 		DataBase.remove();
-		var request = resultedDatas.transaction(["station"], "readwrite")
+		var request = resultedData.transaction(["station"], "readwrite")
 			.objectStore("station")
 			.add({
 				id: 1,
@@ -85,7 +88,7 @@ var DataBase = (function () {
 	};
 
 	me.remove = function () {
-		var request = resultedDatas.transaction(["station"], "readwrite")
+		var request = resultedData.transaction(["station"], "readwrite")
 			.objectStore("station")
 			.delete(1);
 
@@ -94,10 +97,40 @@ var DataBase = (function () {
 		};
 	};
 
+	me.update = function(){
+		if (resultedData){
+			var store = resultedData.transaction(["station"], "readwrite")
+			.objectStore("station");
+			var request = store.get(1);
+
+			request.onsuccess = function(){
+				if (request.result){
+					var data = request.result;
+					console.log(data);
+					data.address = "";
+					data.bikes = "";
+					data.date ="";
+					data.signed ="";
+					data.stationName ="";
+					
+					var updatedData = store.put(data);
+					updatedData.onsuccess = function(){
+						console.log("Data updated : " + data);
+					};
+				}else{
+					console.log("No entry yet");
+				}
+			};
+
+			request.onerror = function () {
+				console.log("No entry yet");
+			};
+		}
+	};
 	/* PRIVATE FUNCTIONS
 	-----------------------------------------------------------*/
 
-	var resultedDatas,
+	var resultedData,
 		timer,
 		request = window.indexedDB.open("BookNbike", 1);
 
@@ -106,18 +139,18 @@ var DataBase = (function () {
 		console.log("Request error" + event);
 	};
 	request.onsuccess = function (event) {
-		resultedDatas = request.result;
-		console.log("success: " + resultedDatas);
+		resultedData = request.result;
+		console.log("success: " + resultedData);
 		DataBase.read();
 	};
 
 	request.onupgradeneeded = function (event) {
-		resultedDatas = event.target.result;
-		var objectStore = resultedDatas.createObjectStore("station", {
+		resultedData = event.target.result;
+		var objectStore = resultedData.createObjectStore("station", {
 				keyPath: "id",
 				autoIncrement: false
-			}),
-			index = objectStore.createIndex('NameIndex', 'name');
+			})//,
+			// index = objectStore.createIndex('NameIndex', 'name');
 	};
 
 	return me;

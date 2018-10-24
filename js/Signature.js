@@ -6,32 +6,68 @@ var Signature = (function () {
 
 	var me = {
 		canvas: $("#canvas"),
+		context: {},
 		done: false
 	};
 
-	// Set canvas context
-	var context = me.canvas[0].getContext('2d');
-	context.globalCompositeOperation = 'destination-over';
-	context.lineJoin = 'round';
-	context.lineCap = 'round';
 
+	/* PUBLIC SCOPE
+	-----------------------------------------------*/
+
+	// Set canvas context
+	me.context = me.canvas[0].getContext('2d');
+	
+	// -----------------------
+	// Finger events
+	// -----------------------
+
+	me.canvas.bind('touchstart', function (e) {
+		moveStart(e, true, this);
+	});
+
+	$(window).bind('touchend', function () {
+		moveEnd();
+	});
+
+	me.canvas.bind('touchmove', function (e) {
+		move(e, true, this);
+	});
+
+	// -----------------------
+	// Mouse events
+	// -----------------------
+
+	me.canvas.mousedown(function (e) {
+		moveStart(e, false, this);
+	});
+
+	$(window).mouseup(function () {
+		moveEnd();
+	});
+
+	me.canvas.mousemove(function (e) {
+		move(e, false, this);
+	});
+
+	/* PRIVATE SCOPE
+	---------------------------------------------------*/
 	var painting = false,
 		started = false,
 		cursorX,
 		cursorY;
-
+	
 	function drawLine() {
 
 		if (!started) {
-			context.beginPath();
-			context.moveTo(cursorX, cursorY);
+			me.context.beginPath();
+			me.context.moveTo(cursorX, cursorY);
 			started = true;
 			me.done = true;
 		} else {
-			context.lineTo(cursorX, cursorY);
-			context.strokeStyle = '#000';
-			context.lineWidth = 4;
-			context.stroke();
+			me.context.lineTo(cursorX, cursorY);
+			me.context.strokeStyle = '#000';
+			me.context.lineWidth = 4;
+			me.context.stroke();
 		}
 	}
 
@@ -76,38 +112,6 @@ var Signature = (function () {
 			cursorY = (e.pageY - this.offsetTop);
 		}
 	}
-
-	// -----------------------
-	// Finger events
-	// -----------------------
-
-	me.canvas.bind('touchstart', function (e) {
-		moveStart(e, true, this);
-	});
-
-	$(window).bind('touchend', function () {
-		moveEnd();
-	});
-
-	me.canvas.bind('touchmove', function (e) {
-		move(e, true, this);
-	});
-
-	// -----------------------
-	// Mouse events
-	// -----------------------
-
-	me.canvas.mousedown(function (e) {
-		moveStart(e, false, this);
-	});
-
-	$(window).mouseup(function () {
-		moveEnd();
-	});
-
-	me.canvas.mousemove(function (e) {
-		move(e, false, this);
-	});
 
 	return me;
 })();

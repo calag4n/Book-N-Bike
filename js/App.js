@@ -80,6 +80,8 @@ var App = (function () {
 	function sizing() {
 		//canvas has to be (re)size with js for working
 		Signature.canvas.attr('width', $DOM.canvasWrapper.width());
+		Signature.context.lineJoin = 'round';
+		Signature.context.lineCap = 'round';
 
 		//To display the .panel-body at the entire screen, we need to substract the .panel-heading's padding
 		var mapHeight = ($DOM.mapSection.height() - $DOM.mapSection.find('.panel-heading').height() - 20)
@@ -93,10 +95,15 @@ var App = (function () {
 	// Page loaded, script begin 
 	$(function () {
 		Slideshow.loadSlide();
+		
+		DataBase.update();
 		sizing();
 		$lazyLoadImg.each(function () {
 			$(this).attr('src', $(this).attr('data-src'));
 		});
+
+		$DOM.formValues.name.val(DataBase.user.name);
+		$DOM.formValues.surname.val(DataBase.user.surname);
 	});
 
 	$(window).resize(function () {
@@ -137,7 +144,7 @@ var App = (function () {
 
 	// As requested in the specifications, the data must be deleted when browser has been closed
 	$(window).on('beforeunload', function () {
-		DataBase.remove();
+		
 	})
 
 
