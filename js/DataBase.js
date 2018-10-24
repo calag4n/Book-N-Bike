@@ -32,7 +32,7 @@ var DataBase = (function () {
 	-----------------------------------------------------------*/
 
 	me.read = function () {
-		var transaction = resultedDatas.transaction(["station"]);
+		var transaction = resultedData.transaction(["station"]);
 		var objectStore = transaction.objectStore("station");
 		var request = objectStore.get(1);
 
@@ -64,7 +64,7 @@ var DataBase = (function () {
 
 	me.add = function (name, surname, signed, stationName, address, bikes) {
 		DataBase.remove();
-		var request = resultedDatas.transaction(["station"], "readwrite")
+		var request = resultedData.transaction(["station"], "readwrite")
 			.objectStore("station")
 			.add({
 				id: 1,
@@ -88,7 +88,7 @@ var DataBase = (function () {
 	};
 
 	me.remove = function () {
-		var request = resultedDatas.transaction(["station"], "readwrite")
+		var request = resultedData.transaction(["station"], "readwrite")
 			.objectStore("station")
 			.delete(1);
 
@@ -98,37 +98,39 @@ var DataBase = (function () {
 	};
 
 	me.update = function(){
-		var store = resultedDatas.transaction(["station"], "readwrite")
-		.objectStore("station");
-		var request = store.get(1);
+		if (resultedData){
+			var store = resultedData.transaction(["station"], "readwrite")
+			.objectStore("station");
+			var request = store.get(1);
 
-		request.onsuccess = function(){
-			if (request.result){
-				var data = request.result;
-				console.log(data);
-				data.address = "";
-				data.bikes = "";
-				data.date ="";
-				data.signed ="";
-				data.stationName ="";
-				
-				var updatedData = store.put(data);
-				updatedData.onsuccess = function(){
-					console.log("Data updated : " + data);
-				};
-			}else{
+			request.onsuccess = function(){
+				if (request.result){
+					var data = request.result;
+					console.log(data);
+					data.address = "";
+					data.bikes = "";
+					data.date ="";
+					data.signed ="";
+					data.stationName ="";
+					
+					var updatedData = store.put(data);
+					updatedData.onsuccess = function(){
+						console.log("Data updated : " + data);
+					};
+				}else{
+					console.log("No entry yet");
+				}
+			};
+
+			request.onerror = function () {
 				console.log("No entry yet");
-			}
-		};
-
-		request.onerror = function () {
-			console.log("No entry yet");
-		};
+			};
+		}
 	};
 	/* PRIVATE FUNCTIONS
 	-----------------------------------------------------------*/
 
-	var resultedDatas,
+	var resultedData,
 		timer,
 		request = window.indexedDB.open("BookNbike", 1);
 
@@ -137,14 +139,14 @@ var DataBase = (function () {
 		console.log("Request error" + event);
 	};
 	request.onsuccess = function (event) {
-		resultedDatas = request.result;
-		console.log("success: " + resultedDatas);
+		resultedData = request.result;
+		console.log("success: " + resultedData);
 		DataBase.read();
 	};
 
 	request.onupgradeneeded = function (event) {
-		resultedDatas = event.target.result;
-		var objectStore = resultedDatas.createObjectStore("station", {
+		resultedData = event.target.result;
+		var objectStore = resultedData.createObjectStore("station", {
 				keyPath: "id",
 				autoIncrement: false
 			})//,

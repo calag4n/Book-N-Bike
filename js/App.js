@@ -80,6 +80,8 @@ var App = (function () {
 	function sizing() {
 		//canvas has to be (re)size with js for working
 		Signature.canvas.attr('width', $DOM.canvasWrapper.width());
+		Signature.context.lineJoin = 'round';
+		Signature.context.lineCap = 'round';
 
 		//To display the .panel-body at the entire screen, we need to substract the .panel-heading's padding
 		var mapHeight = ($DOM.mapSection.height() - $DOM.mapSection.find('.panel-heading').height() - 20)
